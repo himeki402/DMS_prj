@@ -1,0 +1,22 @@
+<div class="mt-4">
+    <div class="row">
+
+        <div class="p-2 col-lg-8 border border-dark mb-5 me-3">
+            <div class="container">
+                <h2 class="mb-5 fs-4">{{document.name}}</h2>
+                <div class="text-center">
+                    <embed src="/pdf/{{document.fileName}}" type="application/pdf" width="95%" height="900px" />
+                </div>
+            </div>
+        </div>
+        <div class="p-2 col-lg-3 border border-dark mb-5 ">
+            <h5>Tài liệu liên quan</h5>
+            <ul class="list-group list-group-flush">
+                {{#each relatedDocuments}}
+                <li class="list-group-item"><a class="text-decoration-none link-dark fs-6" href="/documents/{{this.slug}}">{{this.name}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,70 @@
+<div class="page-header theme-bg-dark py-3 text-center position-relative">
+    <div class="theme-bg-shapes-right"></div>
+    <div class="theme-bg-shapes-left"></div>
+    <div class="container">
+        <h1 class="page-heading single-col-max mx-auto">Documentation</h1>
+        <div class="page-intro single-col-max mx-auto">Everything you need to get your software documentation online.
+        </div>
+        <div class="main-search-box pt-3 d-block mx-auto">
+            <form class="search-form w-100" action="/search" method="post">
+                <input type="text" placeholder="Search the docs..." name="searchTerm" class="form-control search-input">
+                <button class="btn btn-outline-success mt-4" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+    {{#if selectedCategoryId}}
+  <p>Đang lọc theo danh mục: {{selectedCategoryName}}</p>
+{{/if}}
+    <div class="container mt-5">
+        <div class="row">
+            {{#each documents}}
+            <div class="col-sm-6 col-md-4 col-lg-3 mt-5">
+                <div class="card custom-card">
+                    <a href="/documents/{{this.slug}}">
+                        <img class="card-img-top" src="{{this.img}}" alt="Card img">
+                    </a>
+                    <div class="card-body">
+                        <a href="/documents/{{this.slug}}" class="text-decoration-none">
+                            <h5 class="card-title">{{this.name}}</h5>
+                        </a>
+                        <p class="card-text">{{this.category.name}}</p>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <nav aria-label="Page navigation" class="mt-5">
+        <ul class="pagination justify-content-center ">
+            {{#if paginationInfo.hasPrevPage}}
+            <li class="page-item">
+                <a class="page-link" href="?page={{paginationInfo.prevPage}}" aria-label="Previous">
+                    <span aria-hidden="true">Previous</span>
+                </a>
+            </li>
+            {{else}}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            {{/if}}
+
+            {{#each (range 1 paginationInfo.totalPages)}}
+            <li class="page-item {{#if (eq this paginationInfo.page)}}active{{/if}}">
+                <a class="page-link" href="?page={{this}}">{{this}}</a>
+            </li>
+            {{/each}}
+
+            {{#if paginationInfo.hasNextPage}}
+            <li class="page-item">
+                <a class="page-link" href="?page={{paginationInfo.nextPage}}" aria-label="Next">
+                    <span aria-hidden="true">Next</span>
+                </a>
+            </li>
+            {{else}}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
+            </li>
+            {{/if}}
+        </ul>
+    </nav>
+</div>

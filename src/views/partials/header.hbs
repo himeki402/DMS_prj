@@ -1,0 +1,50 @@
+<div class="container">
+  <nav class="navbar navbar-expand-lg bg-body-color">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold fs-3" href="/">DMS</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+          {{#unless isAuthenticated}}
+          <li class="nav-item">
+            <button type="button" class="btn btn-secondary mx-2">
+              <a href="/auth/register" style="color: inherit; text-decoration: none;">Register</a>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-primary">
+              <a href="/auth/login" style="color: inherit; text-decoration: none;">Login</a>
+            </button>
+          </li>
+          {{/unless}}
+
+          {{#if isAuthenticated}}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img class="user-avatar" src="{{user.avatar}}" alt="">
+              {{user.fullname}}
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/user/profile">My profile</a></li>
+              <li><a class="dropdown-item" href="/documents/upload">Upload</a></li>
+              {{#if user.admin}}
+              <li><a class="dropdown-item" href="/user/documents">Documentation</a></li>
+              <li><a class="dropdown-item" href="/category">Category</a></li>
+              {{/if}}
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="/auth/logout">Log out</a></li>.
+            </ul>
+          </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  {{>navbar}}
+  </div>

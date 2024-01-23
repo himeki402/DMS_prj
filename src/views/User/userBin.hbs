@@ -1,0 +1,105 @@
+<div class="mt-4">
+    <div>
+        <h3>Recycle bin</h3>
+        <button class="btn btn-success">
+            <a href="/user/documents" class="text-decoration-none link-light">Your document</a>
+        </button>
+    </div>
+
+
+    <table class="table mt-5">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Created at</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each deletedDocuments}}
+            <tr>
+                <th scope="row" class="mt-2">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.category.name}}</td>
+                <td>{{dateFormat this.createdAt "DD/MM/YYYY"}}</td>
+
+                <td>
+                    <button class="btn btn-primary me-2"> <a href="" class="text-decoration-none link-light btn-restore"
+                            data-id="{{this._id}}">Restore</a></button>
+
+                    <button class="btn btn-danger"> <a href="/documents/{{this._id}}"
+                            class="text-decoration-none link-light" data-bs-toggle="modal"
+                            data-bs-target="#delete-document-modal" data-id="{{this._id}}">Delete forever</a></button>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="5" class="text-center">Empty</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-document-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete document</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this document forever?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="btn-delete-document-modal" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form id="delete-document-form" method="POST"></form>
+<form id="restore-document-form" method="POST"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteDocumentmodal = document.getElementById('delete-document-modal')
+        const deleteForm = document.getElementById('delete-document-form')
+        const restoreForm = document.getElementById('restore-document-form')
+
+        const btnDeleteDocumentModal = document.getElementById('btn-delete-document-modal')
+
+        const restorebtns = document.querySelectorAll('.btn-restore');
+
+
+        let documentId
+        if (deleteDocumentmodal) {
+            deleteDocumentmodal.addEventListener('show.bs.modal', event => {
+                // Button that triggered the modal
+                const button = event.relatedTarget
+                // Extract info from data-bs-* attributes
+                documentId = button.getAttribute('data-id')
+            })
+        }
+
+        btnDeleteDocumentModal.onclick = function () {
+            deleteForm.action = '/documents/' + documentId + '/force?_method=DELETE'
+            deleteForm.submit()
+        }
+        restorebtns.forEach(function (restorebtn) {
+            restorebtn.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const documentId = this.dataset.id;
+                restoreForm.action = '/documents/' + documentId + '/restore?_method=PATCH'
+                restoreForm.submit()
+            });
+        });
+
+    })
+</script>

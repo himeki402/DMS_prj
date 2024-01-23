@@ -1,0 +1,30 @@
+.test11{
+    color: blue;
+}
+.user-avatar{
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 4px;
+    align-items: center;
+    
+}
+.custom-card {
+    height: 100%; /* Chia đều chiều cao cho tất cả các card trong một hàng */
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Hiển thị 2 dòng */
+    -webkit-box-orient: vertical;
+    margin-bottom: 0;
+  }

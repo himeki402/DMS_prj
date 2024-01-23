@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="mt-5 pt-5">
+        <div class="row">
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="text-center">
+                            <!-- Avatar Image -->
+                            <img src="{{ user.avatar }}" alt="User Avatar" class="img-fluid rounded-circle"
+                                style="width: 150px; height: 150px;">
+                        </div>
+                        <h5 class="card-title mt-3">{{ user.fullname }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9 col-sm-8 col-md-6 m-auto">
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-title">
+                            <h2 class="fw-bold mb-3 text-center">Your profile</h2>
+                        </div>
+                        <form action="/user/{{user._id}}?_method=PUT" method="POST">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput" name="fullname"
+                                    placeholder="fullname" value="{{user.fullname}}">
+                                <label for="floatingInput">Fullname</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput" name="email"
+                                    placeholder="Email" value="{{user.email}}">
+                                <label for="floatingInput">Email</label>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary mt-2">Update my profile</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

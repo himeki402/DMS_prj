@@ -1,0 +1,77 @@
+<div class="mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>Category</h3>
+        <button class="btn btn-primary"> <a href="/category/create" class="text-decoration-none link-light">Create
+                category</a></button>
+    </div>
+
+    <table class="table mt-5">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each Categories}}
+            <tr>
+                <th scope="row" class="mt-2">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>
+                    <button class="btn btn-primary me-2"> <a href="/category/{{this._id}}/getUpdate"
+                            class="text-decoration-none link-light">Update</a></button>
+                    <button class="btn btn-danger"> <a href="/category/{{this._id}}"
+                            class="text-decoration-none link-light" data-bs-toggle="modal"
+                            data-bs-target="#delete-category-modal" data-id="{{this._id}}">Delete</a></button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-category-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete category</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this category?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="btn-delete-category-modal" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!--Delete hidden form --}}
+<form id="delete-category-form" method="POST">
+
+</form>
+
+
+<script>
+    const deleteCategorymodal = document.getElementById('delete-category-modal')
+    const deleteForm = document.getElementById('delete-category-form')
+    const btnDeleteCategoryModal = document.getElementById('btn-delete-category-modal')
+    let categoryId
+    if (deleteCategorymodal) {
+        deleteCategorymodal.addEventListener('show.bs.modal', event => {
+            // Button that triggered the modal
+            const button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            categoryId = button.getAttribute('data-id')
+        })
+    }
+
+    btnDeleteCategoryModal.onclick = function () {
+        deleteForm.action = '/category/' + categoryId + '?_method=DELETE'
+        deleteForm.submit()
+    } 
+</script>
