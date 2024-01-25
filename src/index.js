@@ -7,13 +7,14 @@ import dotenv from 'dotenv';
 import flash from 'connect-flash';
 import dateFormat from 'handlebars-dateformat';
 import handlebars from 'handlebars';
+
 import addUserInfoMiddleware from './middleware/userAuthen.js'
 import siteRoute from "./routes/site.js"
 import authRoute from "./routes/auth.js"
 import userRoute from "./routes/user.js"
 import connectDB from './config/connectDB.js';
 import passport from './config/passport.js'
-import session from 'express-session';
+import session, { MemoryStore } from 'express-session';
 import methodOverride from 'method-override';
 import documentRoute from "./routes/document.js"
 import searchRoute  from "./routes/search.js"
@@ -23,6 +24,7 @@ dotenv.config();
 
 
 const app = express()
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 

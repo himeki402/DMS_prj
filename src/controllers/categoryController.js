@@ -30,10 +30,11 @@ const categoryController = {
     //Get /category/:id/getUpdate
     getUpdate: async(req,res)=>{
         try {
-            Category.findById(req.params.id)
-            .then(Category => res.render('category/update',{
-                Category:mongooseToObject(Category),
-            }))
+            const category = await Category.findById(req.params.id)
+            
+            res.render('category/update',{
+                category:mongooseToObject(category),
+            })
 
         } catch (error) {
             res.status(500).json(error)
