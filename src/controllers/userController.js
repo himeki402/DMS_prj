@@ -16,6 +16,7 @@ const userController = {
     showUserdocuments: async (req, res) => {
         const page = parseInt(req.query.page) || 1; 
         const perPage = 8;
+        
         try {
             const documents = await Document.paginate({}, { page, limit: perPage, populate: 'category' });
             const categories = await Category.find();
@@ -30,16 +31,19 @@ const userController = {
                 prevPage: documents.prevPage,
                 nextPage: documents.nextPage
             };
+            const startIndex = (paginationInfo.page - 1) * paginationInfo.limit + 1;
             res.render('User/userDocuments', {
-                documents: mutlpleMongooseToObject(documents.docs),
+                documents: {
+                    startIndex: startIndex,
+                    data: mutlpleMongooseToObject(documents.docs)
+                },
                 paginationInfo: paginationInfo,
                 categories: mutlpleMongooseToObject(categories),
-                
-            }
-            )
-            
+                startIndex: startIndex
+            });
+            console.log(startIndex)
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     },
     updateUserProfile: async (req, res) => {
@@ -56,9 +60,8 @@ const userController = {
     //Get user/bin
     bin: async (req, res) => {
         try {
-            const deletedDocuments = await Document.findDeleted().populate('category')
+            const deletedDocuments = await Document.findWithDeleted({deleted:true}).populate('category')
             const categories = await Category.find();
-            console.log("22", deletedDocuments)
             res.render('User/userBin', {
                 deletedDocuments: mutlpleMongooseToObject(deletedDocuments),
                 categories: mutlpleMongooseToObject(categories)

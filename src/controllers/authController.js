@@ -1,31 +1,46 @@
 import { User } from "../model/model.js"
 import Bcrypt from "bcrypt"
 import passport from '../config/passport.js'
-import {mongooseToObject} from "../util/mongoose.js"
+
 
 const authController = {
     registerUser: async (req, res) => {
         try {
-            const salt = await Bcrypt.genSalt(10)
-            const hashed = await Bcrypt.hash(req.body.password, salt)
-
-            //CREATE new user
-            const newUser = new User({
-                username: req.body.username,
-                email: req.body.email,
-                fullname: req.body.fullname,
-                password: hashed
-            })
-            //Save to DB
-            const user = await newUser.save()
-
-            req.flash('success', 'Đăng ký thành công. Vui lòng đăng nhập.');
-            res.redirect("login");
-        } catch (error) {
-            req.flash('error', 'Đăng ký thất bại. Vui lòng thử lại.');
-            res.redirect('register');
+          let errors = [];
+          const { username, email, password, fullname } = req.body;
+      
+          // Check required fields
+          if (!username || !email || !fullname || !password) {
+            errors.push({ msg: 'Please fill all the fields' });
+          }
+      
+          if (password.length < 6) {
+            errors.push({ msg: 'Password must be at least 6 characters' });
+          }
+      
+          if (errors.length > 0) {
+            return res.render('auth/register', { errors, username, email, password, fullname });
+          }
+      
+          const user = await User.findOne({ username });
+          if (user) {
+            errors.push({ msg: 'Username already exists' });
+            return res.render('auth/register', { errors, username, email, password, fullname });
+          }
+      
+          // Create new user
+          const salt = await Bcrypt.genSalt(10);
+          const hash = await Bcrypt.hash(password, salt);
+          const newUser = new User({ username, email, password: hash, fullname });
+          await newUser.save();
+      
+          req.flash('success_msg', 'You are now registered and can log in');
+          res.redirect('/auth/login');
+        } catch (err) {
+          console.log(err);
+          res.status(500).send('Server Error');
         }
-    },
+      },
     loginUser: (req, res, next) => {
         passport.authenticate('local', {
             successRedirect: '/',
@@ -48,18 +63,15 @@ const authController = {
     getRegister: async (req, res) => {
         try {
             res.render('auth/register'
-            // ,{ isAuthenticated: req.isAuthenticated() }
             )
         } catch (error) {
             res.status(500).json(error)
         }
     },
     getLogin: (req, res) => {
-        res.render('auth/login', { 
-            message: req.flash('error'), 
-            isAuthenticated: req.isAuthenticated(),
-            })
-            console.log(req.isAuthenticated())
+        res.render('auth/login', {
+            message: req.flash('error'),
+        })
     },
 }
 

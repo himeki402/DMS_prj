@@ -8,7 +8,7 @@ import flash from 'connect-flash';
 import dateFormat from 'handlebars-dateformat';
 import handlebars from 'handlebars';
 
-import addUserInfoMiddleware from './middleware/userAuthen.js'
+import addUserInfoMiddleware,{ensureAuthenticated, isAdmin} from './middleware/userAuthen.js'
 import siteRoute from "./routes/site.js"
 import authRoute from "./routes/auth.js"
 import userRoute from "./routes/user.js"
@@ -76,15 +76,21 @@ app.set('view engine', '.hbs');
 app.set('views', './src/views');
 app.use(cors());
 app.use(flash());
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
 app.use(morgan("common"));
 
 //ROUTES
 app.use("/", siteRoute)
 app.use("/auth", authRoute)
-app.use("/user", userRoute)
-app.use("/documents", documentRoute)
+app.use("/user",ensureAuthenticated, userRoute)
+app.use("/documents",ensureAuthenticated,documentRoute)
 app.use("/search", searchRoute)
-app.use("/category", categoryRoute)
+app.use("/category",ensureAuthenticated, categoryRoute)
 
 
 // Start the server

@@ -30,7 +30,7 @@ const documentSchema = new mongoose.Schema({
     data: { type: String },
     img: { type: String, default: "https://cdn.pixabay.com/photo/2017/03/08/21/20/pdf-2127829_1280.png" },
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-    createdBy: { type: String, ref: 'User' },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     slug: { type: String, slug: "name", unique: true },
     tags: { type: String }
 },
