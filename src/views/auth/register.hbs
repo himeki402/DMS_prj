@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="mt-5 pt-5">
+    <div class="mt-5 pt-5 mb-5">
         <div class="row">
             <div class="col-12 col-sm-8 col-md-6 m-auto">
                 <div class="card">
@@ -10,8 +10,18 @@
                         {{> mesages}}
                         <form action="/auth/register" method="post">
                             <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput" name="fullname"
+                                    placeholder="Fullname" autofocus>
+                                <label for="floatingInput">Fullname</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput" name="email"
+                                    placeholder="name@example.com">
+                                <label for="floatingInput">Email address</label>
+                            </div>
+                            <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="floatingInput" name="username"
-                                    placeholder="Username" autofocus>
+                                    placeholder="Username" >
                                 <label for="floatingInput">Username</label>
                             </div>
                             <div class="form-floating mb-3">
@@ -20,14 +30,9 @@
                                 <label for="floatingPassword">Password</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="floatingInput" name="fullname"
-                                    placeholder="Fullname">
-                                <label for="floatingInput">Fullname</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="floatingInput" name="email"
-                                    placeholder="name@example.com">
-                                <label for="floatingInput">Email address</label>
+                                <input type="password" class="form-control" id="floatingPassword" name="repassword"
+                                    placeholder="Comfirm your Password">
+                                <label for="floatingPassword">Comfirm your Password</label>
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">Sign up</button>

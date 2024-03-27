@@ -7,21 +7,23 @@ const authController = {
     registerUser: async (req, res) => {
         try {
           let errors = [];
-          const { username, email, password, fullname } = req.body;
+          const { username, email, password, fullname, repassword } = req.body;
       
           // Check required fields
-          if (!username || !email || !fullname || !password) {
+          if (!username || !email || !fullname || !password || !repassword) {
             errors.push({ msg: 'Please fill all the fields' });
           }
-      
+          if (password != repassword) {
+            errors.push({ msg: 'Passwords do not match' });
+          }
           if (password.length < 6) {
             errors.push({ msg: 'Password must be at least 6 characters' });
           }
-      
+          
+
           if (errors.length > 0) {
             return res.render('auth/register', { errors, username, email, password, fullname });
           }
-      
           const user = await User.findOne({ username });
           if (user) {
             errors.push({ msg: 'Username already exists' });
